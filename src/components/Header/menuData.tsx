@@ -45,24 +45,58 @@ const menuData: Menu[] = [
     //   }
     // ],
   },
+  // {
+  //   id: 5,
+  //   title: "What We Offer",
+  //   newTab: false,
+  //   submenu: [
+  //     {
+  //       id: 61,
+  //       title: "For Clients",
+  //       path: "/client",
+  //       newTab: false,
+  //     },
+  //     {
+  //       id: 62,
+  //       title: "For Workers",
+  //       path: "/workers",
+  //       newTab: false,
+  //     }
+  //   ],
+  // },
+
   {
-    id: 5,
-    title: "What We Offer",
-    newTab: false,
-    submenu: [
-      {
-        id: 61,
-        title: "For Clients",
-        path: "/client",
-        newTab: false,
-      },
-      {
-        id: 62,
-        title: "For Workers",
-        path: "/workers",
-        newTab: false,
-      }
-    ],
-  },
+  id: 5,
+  title: "What We Offer",
+  newTab: false,
+  submenu: [
+    {
+      id: 61,
+      title: "For Clients",
+      path: "/client",
+      newTab: false,
+    },
+    {
+      id: 62,
+      title: "For Workers",
+      path: "/workers",
+      newTab: false,
+      submenu: [
+        {
+          id: 621,
+          title: "View Page",
+          path: "/workers",
+          newTab: false,
+        },
+        {
+          id: 622,
+          title: "Login to Uprisecc App",
+          path: "https://uprisecc-app.com.au/login",
+          newTab: true,
+        },
+      ],
+    },
+  ],
+},
 ];
 export default menuData;

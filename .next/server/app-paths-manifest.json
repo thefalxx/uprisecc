@@ -1,8 +1,8 @@
 {
-  "/(site)/services/page": "app/(site)/services/page.js",
-  "/(site)/about/page": "app/(site)/about/page.js",
-  "/(site)/contact/page": "app/(site)/contact/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
   "/(site)/workers/page": "app/(site)/workers/page.js",
-  "/(site)/client/page": "app/(site)/client/page.js"
+  "/page": "app/page.js",
+  "/(site)/services/page": "app/(site)/services/page.js",
+  "/(site)/contact/page": "app/(site)/contact/page.js",
+  "/(site)/client/page": "app/(site)/client/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }
