@@ -9,6 +9,7 @@ const Header = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [sticky, setSticky] = useState(false);
   const [openIndex, setOpenIndex] = useState(-1);
+  const [openNestedIndex, setOpenNestedIndex] = useState(-1);
   const pathUrl = usePathname();
 
   const isHomePage = pathUrl === "/";
@@ -20,8 +21,10 @@ const Header = () => {
   const handleSubmenu = (index: number) => {
     if (openIndex === index) {
       setOpenIndex(-1);
+      setOpenNestedIndex(-1);
     } else {
       setOpenIndex(index);
+      setOpenNestedIndex(-1);
     }
   };
 
@@ -119,9 +122,7 @@ const Header = () => {
                                   ? "text-body-color dark:text-white lg:text-white"
                                   : "text-dark dark:text-white lg:text-white group-hover:text-primary"
                             } ${
-                              pathUrl === menuItem?.path &&
-                              sticky &&
-                              "!text-primary"
+                              pathUrl === menuItem?.path && sticky && "!text-primary"
                             }`}
                           >
                             {menuItem.title}
@@ -140,7 +141,6 @@ const Header = () => {
                             }`}
                           >
                             {menuItem.title}
-
                             <span className="pl-1">
                               <svg
                                 className={`duration-300 lg:group-hover:rotate-180`}
@@ -158,86 +158,78 @@ const Header = () => {
                             </span>
                           </button>
 
-                          {/* <div
+                          <div
                             className={`submenu relative left-0 top-full w-[250px] rounded-sm bg-white p-4 transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark-2 lg:invisible lg:absolute lg:top-[110%] lg:block lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
                               openIndex === index ? "!-left-[25px]" : "hidden"
                             }`}
                           >
-                            {menuItem?.submenu?.map((submenuItem: any, i) => (
-                              <Link
-                                href={submenuItem.path}
-                                key={i}
-                                className={`block rounded px-4 py-[10px] text-sm ${
-                                  pathUrl === submenuItem.path
-                                    ? "text-primary"
-                                    : "text-body-color hover:text-primary dark:text-dark-6 dark:hover:text-primary"
-                                }`}
-                              >
-                                {submenuItem.title}
-                              </Link>
-                            ))}
-                          </div> */}
+                            {menuItem?.submenu?.map((submenuItem: any, i) =>
+                              submenuItem.submenu ? (
+                                <div key={i} className="group/nested relative">
+                                  <button
+                                    onClick={() =>
+                                      setOpenNestedIndex(openNestedIndex === i ? -1 : i)
+                                    }
+                                    className="flex w-full items-center justify-between rounded px-4 py-[10px] text-sm text-body-color hover:text-primary dark:text-dark-6 dark:hover:text-primary"
+                                  >
+                                    {submenuItem.title}
+                                    <svg
+                                      className={`ml-1 transition-transform duration-300 lg:group-hover/nested:rotate-90 ${
+                                        openNestedIndex === i ? "rotate-90" : ""
+                                      }`}
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 16 17"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M5.3 14.15c-.2 0-.325-.075-.45-.2-.225-.225-.225-.575 0-.8L10.025 8.5 4.875 3.275c-.225-.225-.225-.575 0-.8.225-.225.575-.225.8 0l5.6 5.575c.225.225.225.575 0 .8l-5.575 5.1c-.125.125-.25.2-.4.2Z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </button>
 
-                          <div
-  className={`submenu relative left-0 top-full w-[250px] rounded-sm bg-white p-4 transition-[top] duration-300 group-hover:opacity-100 dark:bg-dark-2 lg:invisible lg:absolute lg:top-[110%] lg:block lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
-    openIndex === index ? "!-left-[25px]" : "hidden"
-  }`}
->
-  {menuItem?.submenu?.map((submenuItem: any, i) =>
-    submenuItem.submenu ? (
-      <div key={i} className="group/nested relative">
-        <button className="flex w-full items-center justify-between rounded px-4 py-[10px] text-sm text-body-color hover:text-primary dark:text-dark-6 dark:hover:text-primary">
-          {submenuItem.title}
-          <svg
-            className="ml-1 duration-300 group-hover/nested:rotate-90"
-            width="14"
-            height="14"
-            viewBox="0 0 16 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.3 14.15c-.2 0-.325-.075-.45-.2-.225-.225-.225-.575 0-.8L10.025 8.5 4.875 3.275c-.225-.225-.225-.575 0-.8.225-.225.575-.225.8 0l5.6 5.575c.225.225.225.575 0 .8l-5.575 5.1c-.125.125-.25.2-.4.2Z"
-              fill="currentColor"
-            />
-          </svg>
-        </button>
-        {/* Nested submenu */}
-        <div className="lg:group-hover/nested:visible lg:group-hover/nested:opacity-100 hidden rounded-sm bg-white p-2 shadow-lg dark:bg-dark-2 lg:invisible lg:absolute lg:left-full lg:top-0 lg:block lg:w-[200px] lg:opacity-0">
-          {submenuItem.submenu.map((nestedItem: any, j: number) => (
-            <Link
-              key={j}
-              href={nestedItem.path}
-              target={nestedItem.newTab ? "_blank" : undefined}
-              rel={nestedItem.newTab ? "noopener noreferrer" : undefined}
-              className={`block rounded px-4 py-[10px] text-sm ${
-                pathUrl === nestedItem.path
-                  ? "text-primary"
-                  : "text-body-color hover:text-primary dark:text-dark-6 dark:hover:text-primary"
-              }`}
-            >
-              {nestedItem.title}
-            </Link>
-          ))}
-        </div>
-      </div>
-    ) : (
-      <Link
-        href={submenuItem.path}
-        key={i}
-        target={submenuItem.newTab ? "_blank" : undefined}
-        rel={submenuItem.newTab ? "noopener noreferrer" : undefined}
-        className={`block rounded px-4 py-[10px] text-sm ${
-          pathUrl === submenuItem.path
-            ? "text-primary"
-            : "text-body-color hover:text-primary dark:text-dark-6 dark:hover:text-primary"
-        }`}
-      >
-        {submenuItem.title}
-      </Link>
-    )
-  )}
-</div>
+                                  {/* Nested submenu — mobile: toggle | desktop: hover */}
+                                  <div
+                                    className={`rounded-sm bg-white dark:bg-dark-2 lg:shadow-lg lg:invisible lg:absolute lg:left-full lg:top-0 lg:w-[200px] lg:opacity-0 lg:group-hover/nested:visible lg:group-hover/nested:opacity-100 ${
+                                      openNestedIndex === i ? "block pl-4" : "hidden lg:block"
+                                    }`}
+                                  >
+                                    {submenuItem.submenu.map((nestedItem: any, j: number) => (
+                                      <Link
+                                        key={j}
+                                        href={nestedItem.path}
+                                        target={nestedItem.newTab ? "_blank" : undefined}
+                                        rel={nestedItem.newTab ? "noopener noreferrer" : undefined}
+                                        className={`block rounded px-4 py-[10px] text-sm ${
+                                          pathUrl === nestedItem.path
+                                            ? "text-primary"
+                                            : "text-body-color hover:text-primary dark:text-dark-6 dark:hover:text-primary"
+                                        }`}
+                                      >
+                                        {nestedItem.title}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              ) : (
+                                <Link
+                                  href={submenuItem.path}
+                                  key={i}
+                                  target={submenuItem.newTab ? "_blank" : undefined}
+                                  rel={submenuItem.newTab ? "noopener noreferrer" : undefined}
+                                  className={`block rounded px-4 py-[10px] text-sm ${
+                                    pathUrl === submenuItem.path
+                                      ? "text-primary"
+                                      : "text-body-color hover:text-primary dark:text-dark-6 dark:hover:text-primary"
+                                  }`}
+                                >
+                                  {submenuItem.title}
+                                </Link>
+                              )
+                            )}
+                          </div>
                         </li>
                       ),
                     )}
